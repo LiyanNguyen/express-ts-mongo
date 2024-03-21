@@ -33,7 +33,7 @@ export const isAuthenticated = async (
 ) => {
   try {
     // extract the cookie
-    const sessionToken = req.cookies["liyan-auth"];
+    const sessionToken = req.cookies[process.env.COOKIE];
     if (!sessionToken) {
       return res.sendStatus(403);
     }

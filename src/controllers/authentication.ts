@@ -32,7 +32,7 @@ export const login = async (req: express.Request, res: express.Response) => {
     await user.save();
 
     // and give the cookie
-    res.cookie("liyan-auth", user.authentication.sessionToken, {
+    res.cookie(process.env.COOKIE, user.authentication.sessionToken, {
       domain: "localhost",
       path: "/",
     });

@@ -26,10 +26,8 @@ server.listen(process.env.PORT, () => {
   console.log(`server running on http://localhost:${process.env.PORT}`);
 });
 
-const MONGO_URL = `mongodb+srv://${process.env.MONGO_LINK}.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-
 mongoose.Promise = Promise;
-mongoose.connect(MONGO_URL);
+mongoose.connect(process.env.MONGO_URL);
 mongoose.connection.on("error", (error: Error) => console.log(error));
 
 app.use("/", router());
