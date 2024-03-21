@@ -1,12 +1,12 @@
 import express from "express";
-import { deleteUserById, getUserById, getUsers } from "../models/users";
+import { UserModel } from "../models/users";
 
 export const getAllUsers = async (
   _: express.Request,
   res: express.Response
 ) => {
   try {
-    const users = await getUsers();
+    const users = await UserModel.find();
     return res.status(200).json(users);
   } catch (error) {
     console.log(error);
@@ -20,7 +20,7 @@ export const deleteUser = async (
 ) => {
   try {
     const { id } = req.params;
-    const deletedUser = await deleteUserById(id);
+    const deletedUser = await UserModel.findOneAndDelete({ _id: id });
     return res.json(deletedUser);
   } catch (error) {
     console.log(error);
@@ -40,12 +40,9 @@ export const updateUser = async (
       return res.sendStatus(400);
     }
 
-    const user = await getUserById(id);
+    const updatedUser = await UserModel.findByIdAndUpdate(id, username);
 
-    user.username = username;
-    await user.save();
-
-    return res.status(200).json(user).end();
+    return res.status(200).json(updatedUser).end();
   } catch (error) {
     console.log(error);
     return res.sendStatus(400);

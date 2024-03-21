@@ -1,6 +1,6 @@
 import express from "express";
 import { get, merge } from "lodash";
-import { getUserBySessionToken } from "../models/users";
+import { UserModel } from "../models/users";
 
 export const isOwner = async (
   req: express.Request,
@@ -39,7 +39,9 @@ export const isAuthenticated = async (
     }
 
     // if user with existing session
-    const existingUser = await getUserBySessionToken(sessionToken);
+    const existingUser = await UserModel.findOne({
+      "authentication.sessionToken": sessionToken,
+    });
     if (!existingUser) {
       return res.sendStatus(403);
     }

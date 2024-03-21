@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser, getUserByEmail } from "../models/users";
+import { UserModel } from "../models/users";
 import { random, authentication } from "../utils";
 
 export const login = async (req: express.Request, res: express.Response) => {
@@ -10,7 +10,7 @@ export const login = async (req: express.Request, res: express.Response) => {
       return res.sendStatus(400);
     }
 
-    const user = await getUserByEmail(email).select(
+    const user = await UserModel.findOne({ email }).select(
       "+authentication.salt +authentication.password"
     );
     if (!user) {
@@ -54,14 +54,14 @@ export const register = async (req: express.Request, res: express.Response) => {
     }
 
     // if user already exists
-    const existingUser = await getUserByEmail(email);
+    const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res.sendStatus(400);
     }
 
     // create authentication
     const salt = random();
-    const user = await createUser({
+    const user = await UserModel.create({
       email,
       username,
       authentication: {
