@@ -3,11 +3,10 @@ import authentication from "./authentication";
 import users from "./users";
 import notes from "./notes";
 
-const router = express.Router();
+const routes = express.Router();
 
-export default (): express.Router => {
-  authentication(router);
-  users(router);
-  notes(router);
-  return router;
-};
+routes.use(users);
+routes.use(notes);
+routes.use(authentication);
+
+export default routes

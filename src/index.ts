@@ -5,8 +5,8 @@ import cookiParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
 import mongoose from "mongoose";
-import router from "./routes";
 require("dotenv").config();
+import routes from "./routes"
 
 const app = express();
 app.use(
@@ -29,5 +29,4 @@ server.listen(process.env.PORT, () => {
 mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGO_URL);
 mongoose.connection.on("error", (error: Error) => console.log(error));
-
-app.use("/", router());
+app.use(routes);
